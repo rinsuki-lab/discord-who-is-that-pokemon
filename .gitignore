@@ -1,0 +1,7 @@
+*.mp4
+*.m4a
+*.webm
+*.ogg
+dist
+node_modules
+.env
