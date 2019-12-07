@@ -11,6 +11,13 @@ if (process.env.PLAY_FILE_PATH == null) {
     process.exit(1)
 }
 
+const PLAY_TIMING = process.env.PLAY_TIMING || "join"
+
+if (PLAY_TIMING !== "join" && PLAY_TIMING !== "leave") {
+    console.log("PLAY_TIMING は join か leave である必要があります")
+    process.exit(1)
+}
+
 const client = new Client()
 
 client.login(process.env.DISCORD_TOKEN)
@@ -25,7 +32,7 @@ function queueRunner() {
     channel.join().then(c => {
         setTimeout(() => {
             const dispatcher = c.playFile(process.env.PLAY_FILE_PATH!)
-            dispatcher.setVolume(0.125)
+            dispatcher.setVolume(0.1)
             c.dispatcher.on("end", () => {
                 channel.leave()
             })
@@ -38,10 +45,16 @@ function queueRunner() {
 }
 
 client.on("voiceStateUpdate", (oldMember, newMember) => {
-    if (newMember.voiceChannelID == null) return
+    if (PLAY_TIMING === "join") {
+        if (newMember.voiceChannelID == null) return
+    } else {
+        if (oldMember.voiceChannelID == null) return
+    }
     if (oldMember.voiceChannelID === newMember.voiceChannelID) return
     if (newMember.user.bot) return
-    if (queue.find(c => c.id === newMember.voiceChannelID)) return
-    queue.push(newMember.voiceChannel)
+    const channel = PLAY_TIMING === "join" ? newMember.voiceChannel : oldMember.voiceChannel
+    if (channel == null) return
+    if (queue.find(c => c.id === channel.id)) return
+    queue.push(channel)
     if (queue.length === 1) queueRunner()
 })
