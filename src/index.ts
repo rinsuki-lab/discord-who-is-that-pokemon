@@ -28,9 +28,9 @@ function queueRunner() {
 }
 
 client.on("voiceStateUpdate", (oldMember, newMember) => {
-    if (newMember.voiceChannelID == null) { return }
+    if (newMember.voiceChannelID == null) return
     if (oldMember.voiceChannelID === newMember.voiceChannelID) return
-    if (newMember.displayName.startsWith("Timecard")) return
+    if (newMember.user.bot) return
     if (queue.find(c => c.id === newMember.voiceChannelID)) return
     queue.push(newMember.voiceChannel)
     if (queue.length === 1) queueRunner()
