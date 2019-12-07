@@ -1,6 +1,16 @@
 require("dotenv").config()
 import { Client, VoiceChannel } from "discord.js"
 
+if (process.env.DISCORD_TOKEN == null) {
+    console.log("DISCORD_TOKEN envがありません")
+    process.exit(1)
+}
+
+if (process.env.PLAY_FILE_PATH == null) {
+    console.log("PLAY_FILE_PATH envがありません")
+    process.exit(1)
+}
+
 const client = new Client()
 
 client.login(process.env.DISCORD_TOKEN)
