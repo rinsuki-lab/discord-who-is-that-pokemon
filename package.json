@@ -7,7 +7,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "discord.js": "^11.5.1",
+    "discord.js": "^12.1.1",
     "dotenv": "^8.2.0",
     "opusscript": "^0.0.7"
   },
