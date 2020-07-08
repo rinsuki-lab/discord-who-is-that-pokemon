@@ -12,7 +12,7 @@
     "opusscript": "^0.0.7"
   },
   "devDependencies": {
-    "@types/node": "^12.12.14",
+    "@types/node": "^14.0.20",
     "typescript": "^3.7.3"
   }
 }
